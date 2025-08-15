@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import Button from '../components/Button'
 import ImageUploader from '../components/ImageUploader'
 import Input from '../components/Input'
+import NavBar from '../components/NavBar'
 import RichTextEditor from '../components/RichTextEditor'
 import { postsAPI } from '../services/api'
 import { authAPI } from '../services/authAPI'
@@ -35,8 +36,10 @@ const Admin = () => {
 
 	return (
 		<div className='max-w-6xl mx-auto py-8 px-4 mt-6'>
-			<div className='flex justify-between items-center mb-8'>
-				<h1 className='text-4xl font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent'>
+			{/* Header */}
+			<NavBar />
+			<div className='flex justify-between items-center mb-8 mt-8'>
+				<h1 className='text-4xl font-bold bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-600 bg-clip-text text-transparent'>
 					Admin Panel
 				</h1>
 				<Button variant='danger' onClick={handleLogout}>
@@ -67,7 +70,7 @@ const Admin = () => {
 					value={form.content}
 					onChange={value => setForm({ ...form, content: value })}
 				/>
-				<div className='mt-4'>
+				<div className='mt-4 flex justify-end'>
 					<Button variant='primary'>{editing ? 'Update' : 'Create'}</Button>
 				</div>
 			</div>

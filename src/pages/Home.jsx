@@ -27,22 +27,22 @@ const Home = () => {
 	}
 
 	const handleBuyMeACoffee = () => {
-		window.open('https://buymeacoffee.com/yourusername', '_blank')
+		window.open('https://tirikchilik.uz/ixlosbek_erkinov', '_blank')
 	}
 
 	return (
 		<div className='space-y-8 pt-16 md:pt-24 pb-24 md:pb-8'>
 			{/* Header Section */}
 			<div className='text-center space-y-4'>
-				<h1 className='text-4xl md:text-5xl font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent'>
-					Posts
+				<h1 className='text-4xl md:text-5xl font-bold bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-600 bg-clip-text text-transparent'>
+					Postlar
 				</h1>
 			</div>
 
 			{/* Loading State */}
 			{loading && (
 				<div className='flex justify-center items-center py-12'>
-					<div className='animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500'></div>
+					<div className='animate-spin rounded-full h-12 w-12 border-b-2 border-sky-500'></div>
 				</div>
 			)}
 
@@ -51,7 +51,7 @@ const Home = () => {
 				<div className='text-center py-12'>
 					<p className='text-red-600 text-lg mb-4'>{error}</p>
 					<Button onClick={fetchPosts} variant='primary'>
-						Try Again
+						Qayta urinib ko‘rish
 					</Button>
 				</div>
 			)}
@@ -61,7 +61,9 @@ const Home = () => {
 				<>
 					{posts.length === 0 ? (
 						<div className='text-center py-12'>
-							<p className='text-gray-500 text-lg'>No posts found.</p>
+							<p className='text-gray-500 text-lg'>
+								Hozircha postlar qidirib topilmadi!
+							</p>
 						</div>
 					) : (
 						<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
@@ -77,17 +79,17 @@ const Home = () => {
 			{!loading && posts.length > 0 && (
 				<div className='text-center py-12 border-t border-gray-200'>
 					<h3 className='text-2xl font-semibold text-gray-900 mb-4'>
-						Enjoyed the content?
+						Blogni qo‘llab-quvvatlash
 					</h3>
 					<p className='text-gray-600 mb-6 max-w-md mx-auto'>
-						If you found value in these posts, consider supporting the blog with
-						a coffee!
+						Agar siz ushbu blogni yoqtirsangiz va uni qo‘llab-quvvatlamoqchi
+						bo‘lsangiz, Buy Me a Coffee orqali yordam bera olasiz.
 					</p>
 					<Button
 						onClick={handleBuyMeACoffee}
 						variant='outline'
 						size='lg'
-						className='bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white border-0 hover:opacity-90'
+						className='bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-600 text-white border-0 hover:opacity-90'
 					>
 						☕ Buy Me a Coffee
 					</Button>

@@ -47,12 +47,12 @@ const RichTextEditor = ({
 				placeholder={placeholder}
 				className='bg-white'
 				style={{
-					height: '300px',
-					marginBottom: '50px', // Space for toolbar
+					maxHeight: '300px', // scroll paydo bo‘lishi uchun cheklash
+					overflowY: 'auto', // scroll qo‘shish
+					marginBottom: '20px',
 				}}
 			/>
 
-			{/* Custom styles for better integration */}
 			<style jsx>{`
 				.rich-text-editor .ql-container {
 					border-bottom-left-radius: 0.5rem;

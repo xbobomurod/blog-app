@@ -1,4 +1,3 @@
-// pages/Login.jsx
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Button from '../components/Button'
@@ -7,7 +6,7 @@ import { authAPI } from '../services/authAPI'
 
 const Login = () => {
 	const navigate = useNavigate()
-	const [form, setForm] = useState({ email: '', password: '' })
+	const [form, setForm] = useState({ username: '', password: '' })
 	const [error, setError] = useState('')
 
 	const handleChange = e => {
@@ -17,17 +16,17 @@ const Login = () => {
 	const handleSubmit = async e => {
 		e.preventDefault()
 		try {
-			await authAPI.login(form.email, form.password)
+			await authAPI.login(form.username, form.password) // email emas, username ishlatyapmiz
 			navigate('/admin')
 		} catch (err) {
-			setError(err.message)
+			setError(err.message || 'Login failed')
 		}
 	}
 
 	return (
 		<div className='min-h-screen flex items-center justify-center bg-gray-50 px-4'>
 			<div className='max-w-md w-full bg-white rounded-2xl shadow-lg p-8'>
-				<h2 className='text-3xl font-bold mb-6 text-center bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent'>
+				<h2 className='text-3xl font-bold mb-6 text-center bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-600 bg-clip-text text-transparent'>
 					Admin Login
 				</h2>
 				{error && (
@@ -37,10 +36,10 @@ const Login = () => {
 				)}
 				<form onSubmit={handleSubmit} className='space-y-4'>
 					<Input
-						label='Email'
-						type='email'
-						name='email'
-						value={form.email}
+						label='Username'
+						type='text'
+						name='username'
+						value={form.username}
 						onChange={handleChange}
 						required
 					/>

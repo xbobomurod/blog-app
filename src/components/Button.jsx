@@ -13,7 +13,7 @@ const Button = ({
 
 	const variantClasses = {
 		primary:
-			'bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white shadow-lg hover:shadow-xl focus:ring-pink-400',
+			'bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-600 text-white shadow-lg hover:shadow-xl focus:ring-sky-400',
 		secondary:
 			'bg-gray-200 text-gray-900 hover:bg-gray-300 focus:ring-gray-500',
 		danger:
@@ -21,8 +21,8 @@ const Button = ({
 		success:
 			'bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg focus:ring-green-400',
 		outline:
-			'border-2 border-primary-600 text-primary-600 hover:bg-primary-50 focus:ring-primary-500',
-		ghost: 'text-primary-600 hover:bg-primary-50 focus:ring-primary-500',
+			'border-2 border-sky-600 text-sky-600 hover:bg-sky-50 focus:ring-sky-500',
+		ghost: 'text-sky-600 hover:bg-sky-50 focus:ring-sky-500',
 	}
 
 	const sizeClasses = {

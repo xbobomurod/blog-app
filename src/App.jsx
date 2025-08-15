@@ -1,6 +1,6 @@
 import { Outlet, Route, Routes } from 'react-router-dom'
 import Navbar from './components/Navbar'
-import About from './pages/About'
+
 import Admin from './pages/Admin'
 import Home from './pages/Home'
 import Login from './pages/Login'
@@ -21,7 +21,7 @@ function App() {
 			{/* Public routes with Navbar */}
 			<Route element={<PublicLayout />}>
 				<Route path='/' element={<Home />} />
-				<Route path='/about' element={<About />} />
+				{/* <Route path='/about' element={<About />} /> */}
 				<Route path='/login' element={<Login />} />
 				<Route path='/post/:id' element={<SinglePost />} />
 			</Route>

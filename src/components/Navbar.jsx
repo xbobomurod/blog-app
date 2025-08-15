@@ -1,34 +1,57 @@
-import { Coffee, Home, Info } from 'lucide-react'
-import { Link, useLocation } from 'react-router-dom'
+import { Coffee, Home, Info, Search } from 'lucide-react'
+import { useState } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Button from './Button'
 
 const Navbar = () => {
 	const location = useLocation()
+	const navigate = useNavigate()
+	const [searchQuery, setSearchQuery] = useState('')
 
 	const navItems = [
 		{ path: '/', label: 'Home', icon: Home },
-		{ path: '/about', label: 'About', icon: Info },
+		{ path: 'https://ixlosbek.uz', label: 'About', icon: Info, external: true },
 	]
 
 	const isActive = path => location.pathname === path
 
 	const handleBuyMeACoffee = () => {
-		window.open('https://buymeacoffee.com/yourusername', '_blank')
+		window.open('https://tirikchilik.uz/ixlosbek_erkinov', '_blank')
 	}
 
-	// Reusable gradient styles
-	const gradientText =
-		'text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500'
-	const gradientBg =
-		'bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white'
+	const handleSearch = e => {
+		e.preventDefault()
+		if (searchQuery.trim()) {
+			navigate(`/search?q=${encodeURIComponent(searchQuery)}`)
+			setSearchQuery('')
+		}
+	}
 
 	return (
 		<>
-			{/* MOBILE TOP LOGO */}
-			<header
-				className={`md:hidden fixed top-0 left-0 w-full ${gradientBg} font-bold text-xl text-center py-3 shadow-lg z-50`}
-			>
-				IxlosWare
+			{/* MOBILE TOP BAR */}
+			<header className='md:hidden fixed top-0 left-0 w-full bg-blue-500 text-white shadow-lg z-50'>
+				<div className='flex items-center justify-between px-3 py-2'>
+					{/* Chapda Logo */}
+					<span className='font-bold text-lg'>IxlosWare</span>
+
+					{/* O'ngda Qidiruv */}
+					<form
+						onSubmit={handleSearch}
+						className='flex items-center bg-white rounded-full px-2 py-1'
+					>
+						<input
+							type='text'
+							placeholder='Qidirish...'
+							value={searchQuery}
+							onChange={e => setSearchQuery(e.target.value)}
+							className='w-34 bg-transparent outline-none text-sm text-gray-700'
+						/>
+						<button type='submit' className='text-blue-500 hover:text-blue-600'>
+							<Search size={18} />
+						</button>
+					</form>
+				</div>
 			</header>
 
 			{/* MOBILE BOTTOM NAVBAR */}
@@ -36,14 +59,29 @@ const Navbar = () => {
 				{navItems.map(item => {
 					const active = isActive(item.path)
 					const Icon = item.icon
-					return (
+					return item.external ? (
+						<a
+							key={item.path}
+							href={item.path}
+							target='_blank'
+							rel='noopener noreferrer'
+							className={`flex flex-col items-center text-xs transition-all ${
+								active
+									? 'text-blue-500 font-semibold'
+									: 'text-gray-500 hover:text-blue-500'
+							}`}
+						>
+							<Icon size={20} />
+							<span>{item.label}</span>
+						</a>
+					) : (
 						<Link
 							key={item.path}
 							to={item.path}
 							className={`flex flex-col items-center text-xs transition-all ${
 								active
-									? 'text-pink-500 font-semibold'
-									: 'text-gray-500 hover:text-pink-500'
+									? 'text-blue-500 font-semibold'
+									: 'text-gray-500 hover:text-blue-500'
 							}`}
 						>
 							<Icon size={20} />
@@ -51,47 +89,74 @@ const Navbar = () => {
 						</Link>
 					)
 				})}
-				<button
+				<Button
 					onClick={handleBuyMeACoffee}
-					className='flex flex-col items-center text-xs text-yellow-600 hover:text-yellow-700 transition-all'
+					className='flex items-center gap-2 bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-500 text-white font-semibold px-4 py-2 rounded-full shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all'
 				>
-					<Coffee size={20} />
-					Coffee
-				</button>
+					<Coffee size={18} className='text-white' /> Buy Me a Coffee
+				</Button>
 			</div>
 
 			{/* DESKTOP NAVBAR */}
 			<nav className='hidden md:flex fixed top-4 left-1/2 -translate-x-1/2 w-[90%] bg-white/80 backdrop-blur-md shadow-lg border border-gray-200 rounded-full px-6 py-3 items-center justify-between z-50'>
 				{/* Left: Logo */}
-				<Link to='/' className={`text-xl font-extrabold ${gradientText}`}>
+				<Link to='/' className='text-xl font-extrabold text-blue-500'>
 					IxlosWare
 				</Link>
 
+				{/* Center: Search */}
+				<form
+					onSubmit={handleSearch}
+					className='flex items-center bg-gray-100 rounded-full px-2 py-2'
+				>
+					<input
+						type='text'
+						placeholder='Qidirish...'
+						value={searchQuery}
+						onChange={e => setSearchQuery(e.target.value)}
+						className='bg-transparent outline-none text-sm px-2'
+					/>
+					<button type='submit' className='text-blue-500 hover:text-blue-600'>
+						<Search size={18} />
+					</button>
+				</form>
+
 				{/* Right: Menu */}
 				<div className='flex items-center space-x-4'>
-					{navItems.map(item => {
-						const active = isActive(item.path)
-						return (
+					{navItems.map(item =>
+						item.external ? (
+							<a
+								key={item.path}
+								href={item.path}
+								target='_blank'
+								rel='noopener noreferrer'
+								className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+									isActive(item.path)
+										? 'bg-blue-500 text-white shadow-md'
+										: 'text-gray-700 hover:text-blue-500'
+								}`}
+							>
+								{item.label}
+							</a>
+						) : (
 							<Link
 								key={item.path}
 								to={item.path}
 								className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-									active
-										? `${gradientBg} shadow-md`
-										: `text-gray-700 hover:${gradientText}`
+									isActive(item.path)
+										? 'bg-blue-500 text-white shadow-md'
+										: 'text-gray-700 hover:text-blue-500'
 								}`}
 							>
 								{item.label}
 							</Link>
 						)
-					})}
+					)}
 					<Button
 						onClick={handleBuyMeACoffee}
-						variant='outline'
-						size='sm'
-						className={`border-0 ${gradientBg} hover:opacity-90 rounded-full px-4`}
+						className='flex items-center gap-2 bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-500 text-white font-semibold px-4 py-2 rounded-full shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all'
 					>
-						☕ Buy Me a Coffee
+						<Coffee size={18} className='text-white' /> Buy Me a Coffee
 					</Button>
 				</div>
 			</nav>
