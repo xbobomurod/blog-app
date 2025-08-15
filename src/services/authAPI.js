@@ -1,6 +1,6 @@
 export const authAPI = {
   login: async (email, password) => {
-    if (email === "xbobomurod50@gmail.com" && password === "123456") {
+    if (email === "my@gmail.com" && password === "123456") {
       localStorage.setItem("token", "fake-jwt-token");
       return { success: true };
     }
