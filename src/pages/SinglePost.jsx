@@ -9,23 +9,25 @@ const SinglePost = () => {
 	const [post, setPost] = useState(null)
 	const [loading, setLoading] = useState(true)
 	const [error, setError] = useState('')
-	const [copied, setCopied] = useState(false) // Copied yozuvi uchun state
+	const [copied, setCopied] = useState(false)
 
-	useEffect(() => fetchPost(), [id])
-
-	const fetchPost = async () => {
-		try {
-			setLoading(true)
-			const data = await postsAPI.getPostById(id)
-			setPost(data.data || data)
-			setError('')
-		} catch (err) {
-			console.error(err)
-			setError('Postni yuklashda xatolik yuz berdi.')
-		} finally {
-			setLoading(false)
+	useEffect(() => {
+		const fetchPostData = async () => {
+			try {
+				setLoading(true)
+				const data = await postsAPI.getPostById(id)
+				setPost(data.data || data)
+				setError('')
+			} catch (err) {
+				console.error(err)
+				setError('Postni yuklashda xatolik yuz berdi.')
+			} finally {
+				setLoading(false)
+			}
 		}
-	}
+
+		fetchPostData()
+	}, [id])
 
 	const handleBuyMeACoffee = () => {
 		window.open('https://buymeacoffee.com/yourusername', '_blank')
@@ -35,7 +37,7 @@ const SinglePost = () => {
 		const postUrl = window.location.href
 		navigator.clipboard.writeText(postUrl)
 		setCopied(true)
-		setTimeout(() => setCopied(false), 2000) // 2 soniyadan keyin yo'qoladi
+		setTimeout(() => setCopied(false), 2000)
 	}
 
 	const formatDate = dateString => {
@@ -50,7 +52,7 @@ const SinglePost = () => {
 	if (loading)
 		return (
 			<div className='flex justify-center items-center py-20'>
-				<div className='animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500'></div>
+				<div className='animate-spin rounded-full h-12 w-12 border-b-2 border-gray-700'></div>
 			</div>
 		)
 
@@ -94,7 +96,7 @@ const SinglePost = () => {
 				)}
 
 				<div className='p-6 md:p-10'>
-					<h1 className='text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent mb-4'>
+					<h1 className='text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-blue-600 to-indigo-500 bg-clip-text text-transparent mb-4'>
 						{post.title}
 					</h1>
 
@@ -106,20 +108,14 @@ const SinglePost = () => {
 					<div className='flex justify-center gap-4 mt-12 pt-8 border-t border-gray-200 items-center relative'>
 						<Button
 							onClick={handleBuyMeACoffee}
-							variant='outline'
-							size='lg'
 							className='flex items-center gap-2 bg-gradient-to-r from-[#6f4e37] via-[#a67c52] to-[#d2b48c] text-white font-semibold px-4 py-2 rounded-full shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all'
+							size='lg'
 						>
 							<Coffee /> Buy Me a Coffee
 						</Button>
 
 						<div className='relative flex items-center'>
-							<Button
-								onClick={handleShare}
-								variant='outline'
-								size='lg'
-								className='flex items-center gap-2 bg-blue-500 text-white font-semibold px-4 py-2 rounded-full shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all'
-							>
+							<Button onClick={handleShare} variant='outline' size='md'>
 								<Share2 /> Share
 							</Button>
 							{copied && (

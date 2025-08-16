@@ -16,10 +16,10 @@ const PostCard = ({ post }) => {
 	}
 
 	const handleShare = () => {
-		const postUrl = `${window.location.origin}/posts/${post._id}`
+		const postUrl = `${window.location.origin}/post/${post._id}`
 		navigator.clipboard.writeText(postUrl)
 		setCopied(true)
-		setTimeout(() => setCopied(false), 2000) // 2 soniya keyin yo'qoladi
+		setTimeout(() => setCopied(false), 2000)
 	}
 
 	const formattedDate = post.createdAt
@@ -60,12 +60,12 @@ const PostCard = ({ post }) => {
 				</p>
 
 				<div className='flex gap-2 items-center'>
+					{/* Direct Link instead of Button wrapper */}
 					<Button
 						as={Link}
-						to={`/posts/${post._id}`}
+						to={`/post/${post._id}`} // to'g'ri yo'l
 						variant='primary'
 						size='md'
-						className='w-max px-5 py-2 text-sm md:text-base'
 					>
 						Read More
 					</Button>
