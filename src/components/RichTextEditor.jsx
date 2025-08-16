@@ -12,7 +12,7 @@ const RichTextEditor = forwardRef(
 				[{ list: 'ordered' }, { list: 'bullet' }],
 				[{ color: [] }, { background: [] }],
 				[{ align: [] }],
-				['link', 'image'],
+				['link'],
 				['clean'],
 			],
 		}
@@ -29,7 +29,6 @@ const RichTextEditor = forwardRef(
 			'background',
 			'align',
 			'link',
-			'image',
 		]
 
 		return (

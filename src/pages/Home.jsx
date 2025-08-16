@@ -1,3 +1,4 @@
+import { Coffee } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import Button from '../components/Button'
 import PostCard from '../components/PostCard'
@@ -16,7 +17,6 @@ const Home = () => {
 		try {
 			setLoading(true)
 			const res = await postsAPI.getAllPosts()
-			// backend formatidan 'data' ni olish
 			const postsData = res.data || []
 			setPosts(Array.isArray(postsData) ? postsData : [])
 			setError('')
@@ -33,13 +33,14 @@ const Home = () => {
 	}
 
 	return (
-		<div className='space-y-8 pt-16 md:pt-24 pb-24 md:pb-8'>
+		<div className='space-y-8 pt-16 md:pt-24 pb-24 md:pb-8 max-w-4xl mx-auto px-4'>
 			{/* Header Section */}
-			<div className='text-center space-y-4'>
-				<h1 className='text-4xl md:text-5xl font-bold bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-600 bg-clip-text text-transparent'>
-					Postlar
-				</h1>
-			</div>
+		<div className='bg-blue-50 md:bg-blue-100 py-12 px-6 md:px-12 rounded-2xl max-w-6xl mx-auto text-center'>
+	<h1 className='text-4xl md:text-5xl font-bold text-blue-800'>
+		Postlar
+	</h1>
+</div>
+
 
 			{/* Loading State */}
 			{loading && (
@@ -68,9 +69,16 @@ const Home = () => {
 						</p>
 					</div>
 				) : (
-					<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+					<div className='flex flex-col space-y-4'>
+						{' '}
+						{/* space-y-4 bilan bo‘shliqni kamaytirdik */}
 						{posts.map(post => (
-							<PostCard key={post._id} post={post} />
+							<PostCard
+								key={post._id}
+								post={post}
+								buttonVariant='primary'
+								className='p-4 md:p-3' // paddingni kichraytirdik
+							/>
 						))}
 					</div>
 				))}
@@ -87,11 +95,10 @@ const Home = () => {
 					</p>
 					<Button
 						onClick={handleBuyMeACoffee}
-						variant='outline'
+						className='flex items-center gap-2 bg-gradient-to-r from-[#6f4e37] via-[#a67c52] to-[#d2b48c] text-white font-semibold px-4 py-2 rounded-full shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all'
 						size='lg'
-						className='bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-600 text-white border-0 hover:opacity-90'
 					>
-						☕ Buy Me a Coffee
+						<Coffee /> Buy Me a Coffee
 					</Button>
 				</div>
 			)}

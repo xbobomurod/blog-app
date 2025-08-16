@@ -95,10 +95,24 @@ const Admin = () => {
 	return (
 		<>
 			<Navbar />
-			<div className='max-w-6xl mx-auto space-y-8 pt-16 pb-24 px-4'>
+			<div className='mt-6 max-w-6xl mx-auto space-y-8 pt-16 pb-24 px-4'>
 				<h1 className='text-3xl md:text-4xl font-bold text-center mb-6'>
 					Admin Panel
 				</h1>
+
+				{/* Logout */}
+				<div className='flex justify-end mb-6'>
+					<Button
+						variant='primary'
+						onClick={() => {
+							localStorage.removeItem('token')
+							window.location.href = '/'
+						}}
+						className='px-6 py-2 bg-gradient-to-r from-[#34a4b0] to-black text-white rounded-full shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all'
+					>
+						Logout
+					</Button>
+				</div>
 
 				{/* Post yaratish / edit form */}
 				<div className='bg-white shadow-lg rounded-2xl p-6 space-y-4'>

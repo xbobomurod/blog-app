@@ -1,3 +1,4 @@
+import { Coffee, Share2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import Button from '../components/Button'
@@ -8,6 +9,7 @@ const SinglePost = () => {
 	const [post, setPost] = useState(null)
 	const [loading, setLoading] = useState(true)
 	const [error, setError] = useState('')
+	const [copied, setCopied] = useState(false) // Copied yozuvi uchun state
 
 	useEffect(() => fetchPost(), [id])
 
@@ -18,7 +20,7 @@ const SinglePost = () => {
 			setPost(data.data || data)
 			setError('')
 		} catch (err) {
-			console.error('Error fetching post:', err)
+			console.error(err)
 			setError('Postni yuklashda xatolik yuz berdi.')
 		} finally {
 			setLoading(false)
@@ -27,6 +29,13 @@ const SinglePost = () => {
 
 	const handleBuyMeACoffee = () => {
 		window.open('https://buymeacoffee.com/yourusername', '_blank')
+	}
+
+	const handleShare = () => {
+		const postUrl = window.location.href
+		navigator.clipboard.writeText(postUrl)
+		setCopied(true)
+		setTimeout(() => setCopied(false), 2000) // 2 soniyadan keyin yo'qoladi
 	}
 
 	const formatDate = dateString => {
@@ -44,6 +53,7 @@ const SinglePost = () => {
 				<div className='animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500'></div>
 			</div>
 		)
+
 	if (error)
 		return (
 			<div className='text-center py-20'>
@@ -53,6 +63,7 @@ const SinglePost = () => {
 				</Link>
 			</div>
 		)
+
 	if (!post)
 		return (
 			<div className='text-center py-20'>
@@ -87,34 +98,43 @@ const SinglePost = () => {
 						{post.title}
 					</h1>
 
-					{post.createdAt && (
-						<p className='text-gray-500 text-sm mb-6'>
-							📅 {formatDate(post.createdAt)}
-						</p>
-					)}
-
 					<div
-						className='prose prose-lg max-w-none text-gray-700 leading-relaxed mb-10'
+						className='prose prose-lg max-w-none text-gray-700 leading-relaxed mb-10 a:text-blue-600 a:underline hover:a:text-blue-800'
 						dangerouslySetInnerHTML={{ __html: post.content }}
 					/>
 
-					<div className='mt-12 pt-8 border-t border-gray-200 text-center'>
-						<h3 className='text-xl md:text-2xl font-semibold text-gray-900 mb-4'>
-							Enjoyed this post?
-						</h3>
-						<p className='text-gray-600 mb-6'>
-							If you found value in this content, consider supporting the blog
-							with a coffee!
-						</p>
+					<div className='flex justify-center gap-4 mt-12 pt-8 border-t border-gray-200 items-center relative'>
 						<Button
 							onClick={handleBuyMeACoffee}
 							variant='outline'
 							size='lg'
-							className='bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white border-0 hover:opacity-90'
+							className='flex items-center gap-2 bg-gradient-to-r from-[#6f4e37] via-[#a67c52] to-[#d2b48c] text-white font-semibold px-4 py-2 rounded-full shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all'
 						>
-							☕ Buy Me a Coffee
+							<Coffee /> Buy Me a Coffee
 						</Button>
+
+						<div className='relative flex items-center'>
+							<Button
+								onClick={handleShare}
+								variant='outline'
+								size='lg'
+								className='flex items-center gap-2 bg-blue-500 text-white font-semibold px-4 py-2 rounded-full shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all'
+							>
+								<Share2 /> Share
+							</Button>
+							{copied && (
+								<span className='absolute -right-16 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded'>
+									Copied!
+								</span>
+							)}
+						</div>
 					</div>
+
+					{post.createdAt && (
+						<p className='text-gray-500 text-sm mt-4 text-right'>
+							📅 {formatDate(post.createdAt)}
+						</p>
+					)}
 				</div>
 			</article>
 		</div>

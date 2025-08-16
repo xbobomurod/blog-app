@@ -1,58 +1,86 @@
+import { format } from 'date-fns'
+import { Share2 } from 'lucide-react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import Button from './Button'
 
 const PostCard = ({ post }) => {
-	const truncateContent = (text, maxLength = 150) => {
+	const [copied, setCopied] = useState(false)
+
+	const truncateContent = (text, maxLength = 160) => {
 		if (!text) return ''
-		const plainText = text.replace(/<[^>]+>/g, '') // HTML teglarni olib tashlash
+		const plainText = text.replace(/<[^>]+>/g, '')
 		return plainText.length <= maxLength
 			? plainText
 			: plainText.substring(0, maxLength) + '...'
 	}
 
+	const handleShare = () => {
+		const postUrl = `${window.location.origin}/posts/${post._id}`
+		navigator.clipboard.writeText(postUrl)
+		setCopied(true)
+		setTimeout(() => setCopied(false), 2000) // 2 soniya keyin yo'qoladi
+	}
+
+	const formattedDate = post.createdAt
+		? format(new Date(post.createdAt), 'MMM dd, yyyy')
+		: ''
+
 	return (
-		<article className='bg-white rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl flex flex-col h-full'>
-			{/* Post Image */}
-			<div className='relative overflow-hidden aspect-video group'>
+		<article className='bg-white rounded-2xl shadow-md overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-lg flex flex-col h-full mx-auto max-w-6xl'>
+			<div className='relative overflow-hidden aspect-video'>
 				<img
 					src={
 						post.image || 'https://via.placeholder.com/400x225?text=No+Image'
 					}
 					alt={post.title}
-					className='w-full h-full object-cover transition-transform duration-500 group-hover:scale-110'
+					className='w-full h-full object-cover transition-transform duration-500 hover:scale-110'
 				/>
-				<div className='absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
+				<div className='absolute inset-0 bg-gradient-to-t from-black/30 to-transparent'></div>
 			</div>
 
-			{/* Post Content */}
-			<div className='p-6 flex flex-col flex-grow'>
-				<h2 className='text-lg md:text-xl font-bold text-gray-900 mb-3 line-clamp-2'>
-					{post.title}
-				</h2>
+			<div className='p-5 flex flex-col flex-grow'>
+				<div className='flex justify-between items-start mb-3'>
+					<h2 className='text-xl md:text-2xl font-bold text-gray-900 line-clamp-2'>
+						{post.title}
+					</h2>
+					<p className='text-gray-500 text-sm md:text-base'>{formattedDate}</p>
+				</div>
 
-				<p className='text-gray-700 text-sm md:text-base leading-relaxed mb-4 flex-grow'>
-					{truncateContent(post.content, 180)}
+				<p className='text-gray-700 text-sm md:text-lg leading-relaxed mb-4 flex-grow'>
+					<span
+						className='prose prose-sm max-w-none'
+						dangerouslySetInnerHTML={{
+							__html: truncateContent(post.content, 160).replace(
+								/(https?:\/\/[^\s]+)/g,
+								'<a href="$1" target="_blank" class="text-blue-600 underline hover:text-blue-800">$1</a>'
+							),
+						}}
+					/>
 				</p>
 
-				{/* Read More Link */}
-				<Link
-					to={`/post/${post._id}`}
-					className='inline-flex items-center justify-center w-max px-5 py-2 rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white text-sm md:text-base font-medium shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105'
-				>
-					Read More
-					<svg
-						className='ml-2 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1'
-						fill='none'
-						stroke='currentColor'
-						viewBox='0 0 24 24'
+				<div className='flex gap-2 items-center'>
+					<Button
+						as={Link}
+						to={`/posts/${post._id}`}
+						variant='primary'
+						size='md'
+						className='w-max px-5 py-2 text-sm md:text-base'
 					>
-						<path
-							strokeLinecap='round'
-							strokeLinejoin='round'
-							strokeWidth={2}
-							d='M9 5l7 7-7 7'
-						/>
-					</svg>
-				</Link>
+						Read More
+					</Button>
+
+					<div className='relative flex items-center'>
+						<Button onClick={handleShare} variant='outline' size='md'>
+							<Share2 /> Share
+						</Button>
+						{copied && (
+							<span className='absolute -right-16 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded'>
+								Copied!
+							</span>
+						)}
+					</div>
+				</div>
 			</div>
 		</article>
 	)

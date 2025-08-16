@@ -22,7 +22,6 @@ const Navbar = () => {
 	const handleSearch = e => {
 		e.preventDefault()
 		if (searchQuery.trim()) {
-			// /search sahifasiga yo'naltirish va query param berish
 			navigate(`/search?q=${encodeURIComponent(searchQuery)}`)
 			setSearchQuery('')
 		}
@@ -59,39 +58,40 @@ const Navbar = () => {
 				{navItems.map(item => {
 					const active = isActive(item.path)
 					const Icon = item.icon
-					return item.external ? (
-						<a
-							key={item.path}
-							href={item.path}
-							target='_blank'
-							rel='noopener noreferrer'
-							className={`flex flex-col items-center text-xs transition-all ${
-								active
-									? 'text-blue-500 font-semibold'
-									: 'text-gray-500 hover:text-blue-500'
-							}`}
-						>
-							<Icon size={20} />
-							<span>{item.label}</span>
-						</a>
-					) : (
+					const textClass = active
+						? 'text-blue-500 font-semibold'
+						: 'text-gray-500 hover:text-blue-500'
+
+					if (item.external) {
+						return (
+							<a
+								key={item.path}
+								href={item.path}
+								target='_blank'
+								rel='noopener noreferrer'
+								className={`flex flex-col items-center text-xs transition-all ${textClass}`}
+							>
+								<Icon size={20} />
+								<span>{item.label}</span>
+							</a>
+						)
+					}
+
+					return (
 						<Link
 							key={item.path}
 							to={item.path}
-							className={`flex flex-col items-center text-xs transition-all ${
-								active
-									? 'text-blue-500 font-semibold'
-									: 'text-gray-500 hover:text-blue-500'
-							}`}
+							className={`flex flex-col items-center text-xs transition-all ${textClass}`}
 						>
 							<Icon size={20} />
 							<span>{item.label}</span>
 						</Link>
 					)
 				})}
+
 				<Button
 					onClick={handleBuyMeACoffee}
-					className='flex items-center gap-2 bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-500 text-white font-semibold px-4 py-2 rounded-full shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all'
+					className='flex items-center gap-2 bg-gradient-to-r from-[#6f4e37] via-[#a67c52] to-[#d2b48c] text-white font-semibold px-4 py-2 rounded-full shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all'
 				>
 					<Coffee size={18} className='text-white' /> Buy Me a Coffee
 				</Button>
@@ -121,38 +121,40 @@ const Navbar = () => {
 				</form>
 
 				<div className='flex items-center space-x-4'>
-					{navItems.map(item =>
-						item.external ? (
-							<a
-								key={item.path}
-								href={item.path}
-								target='_blank'
-								rel='noopener noreferrer'
-								className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-									isActive(item.path)
-										? 'bg-blue-500 text-white shadow-md'
-										: 'text-gray-700 hover:text-blue-500'
-								}`}
-							>
-								{item.label}
-							</a>
-						) : (
+					{navItems.map(item => {
+						const active = isActive(item.path)
+						const textClass = active
+							? 'text-blue-500 font-semibold'
+							: 'text-gray-700 hover:text-blue-500'
+
+						if (item.external) {
+							return (
+								<a
+									key={item.path}
+									href={item.path}
+									target='_blank'
+									rel='noopener noreferrer'
+									className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${textClass}`}
+								>
+									{item.label}
+								</a>
+							)
+						}
+
+						return (
 							<Link
 								key={item.path}
 								to={item.path}
-								className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-									isActive(item.path)
-										? 'bg-blue-500 text-white shadow-md'
-										: 'text-gray-700 hover:text-blue-500'
-								}`}
+								className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${textClass}`}
 							>
 								{item.label}
 							</Link>
 						)
-					)}
+					})}
+
 					<Button
 						onClick={handleBuyMeACoffee}
-						className='flex items-center gap-2 bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-500 text-white font-semibold px-4 py-2 rounded-full shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all'
+						className='flex items-center gap-2 bg-gradient-to-r from-[#6f4e37] via-[#a67c52] to-[#d2b48c] text-white font-semibold px-4 py-2 rounded-full shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all'
 					>
 						<Coffee size={18} className='text-white' /> Buy Me a Coffee
 					</Button>

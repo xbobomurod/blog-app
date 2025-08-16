@@ -17,11 +17,17 @@ const SearchResults = () => {
 			setLoading(true)
 			setError('')
 			try {
-				const allPosts = await postsAPI.getAllPosts()
+				const res = await postsAPI.getAllPosts()
+				const allPosts = res.data || []
+
+				// HTML teglarni olib tashlash
 				const filteredPosts = allPosts.filter(post => {
-					const text = (post.title + ' ' + post.content).toLowerCase()
+					const text = (post.title + ' ' + (post.content || ''))
+						.replace(/<[^>]+>/g, '')
+						.toLowerCase()
 					return text.includes(searchQuery.toLowerCase())
 				})
+
 				setPosts(filteredPosts)
 			} catch (err) {
 				console.error(err)
@@ -31,7 +37,11 @@ const SearchResults = () => {
 			}
 		}
 
-		fetchPosts()
+		if (searchQuery.trim()) {
+			fetchPosts()
+		} else {
+			setPosts([])
+		}
 	}, [searchQuery])
 
 	return (
@@ -45,7 +55,7 @@ const SearchResults = () => {
 			)}
 			{error && <p className='text-center text-red-600 text-lg'>{error}</p>}
 
-			{!loading && posts.length === 0 && (
+			{!loading && !error && posts.length === 0 && (
 				<p className='text-center text-gray-500 text-lg'>
 					Hech qanday post topilmadi.
 				</p>
