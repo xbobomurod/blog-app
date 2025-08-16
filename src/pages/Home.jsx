@@ -18,7 +18,17 @@ const Home = () => {
 			setLoading(true)
 			const res = await postsAPI.getAllPosts()
 			const postsData = res.data || []
-			setPosts(Array.isArray(postsData) ? postsData : [])
+
+			// ✅ Postlarni sort qilish — updatedAt bo‘yicha (agar bo‘lmasa createdAt bo‘yicha)
+			const sortedPosts = Array.isArray(postsData)
+				? postsData.sort(
+						(a, b) =>
+							new Date(b.updatedAt || b.createdAt) -
+							new Date(a.updatedAt || a.createdAt)
+				  )
+				: []
+
+			setPosts(sortedPosts)
 			setError('')
 		} catch (err) {
 			console.error('Error fetching posts:', err)
@@ -33,15 +43,7 @@ const Home = () => {
 	}
 
 	return (
-		<div className='space-y-8 pt-16 md:pt-24 pb-24 md:pb-8 max-w-4xl mx-auto px-4'>
-			{/* Header Section */}
-		<div className='bg-blue-50 md:bg-blue-100 py-12 px-6 md:px-12 rounded-2xl max-w-6xl mx-auto text-center'>
-	<h1 className='text-4xl md:text-5xl font-bold text-blue-800'>
-		Postlar
-	</h1>
-</div>
-
-
+		<div className='space-y-8 pt-16 md:pt-24 pb-24 md:pb-8 max-w-6xl mx-auto px-4 mt-10'>
 			{/* Loading State */}
 			{loading && (
 				<div className='flex justify-center items-center py-12'>
@@ -64,21 +66,12 @@ const Home = () => {
 				!error &&
 				(posts.length === 0 ? (
 					<div className='text-center py-12'>
-						<p className='text-gray-500 text-lg'>
-							Hozircha postlar qidirib topilmadi!
-						</p>
+						<p className='text-gray-500 text-lg'>Hozircha postlar topilmadi!</p>
 					</div>
 				) : (
-					<div className='flex flex-col space-y-4'>
-						{' '}
-						{/* space-y-4 bilan bo‘shliqni kamaytirdik */}
+					<div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
 						{posts.map(post => (
-							<PostCard
-								key={post._id}
-								post={post}
-								buttonVariant='primary'
-								className='p-4 md:p-3' // paddingni kichraytirdik
-							/>
+							<PostCard key={post._id} post={post} />
 						))}
 					</div>
 				))}

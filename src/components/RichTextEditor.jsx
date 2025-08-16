@@ -2,7 +2,6 @@ import { forwardRef } from 'react'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 
-// forwardRef qo‘shildi
 const RichTextEditor = forwardRef(
 	({ value, onChange, placeholder = 'Write your content here...' }, ref) => {
 		const modules = {
@@ -34,7 +33,7 @@ const RichTextEditor = forwardRef(
 		return (
 			<div className='rich-text-editor'>
 				<ReactQuill
-					ref={ref} // forwardRef bilan bog‘landi
+					ref={ref}
 					theme='snow'
 					value={value}
 					onChange={onChange}
