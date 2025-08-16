@@ -110,7 +110,7 @@ const Navbar = () => {
 					<input
 						type='text'
 						name='q'
-						placeholder='Qidirish...'
+						placeholder='Search...'
 						value={searchQuery}
 						onChange={e => setSearchQuery(e.target.value)}
 						className='bg-transparent outline-none text-sm px-2'
