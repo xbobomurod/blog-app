@@ -15,12 +15,14 @@ const Home = () => {
 	const fetchPosts = async () => {
 		try {
 			setLoading(true)
-			const data = await postsAPI.getAllPosts()
-			setPosts(data)
+			const res = await postsAPI.getAllPosts()
+			// backend formatidan 'data' ni olish
+			const postsData = res.data || []
+			setPosts(Array.isArray(postsData) ? postsData : [])
 			setError('')
 		} catch (err) {
-			setError('Failed to load posts. Please try again later.')
 			console.error('Error fetching posts:', err)
+			setError('Failed to load posts. Please try again later.')
 		} finally {
 			setLoading(false)
 		}
@@ -47,7 +49,7 @@ const Home = () => {
 			)}
 
 			{/* Error State */}
-			{error && (
+			{!loading && error && (
 				<div className='text-center py-12'>
 					<p className='text-red-600 text-lg mb-4'>{error}</p>
 					<Button onClick={fetchPosts} variant='primary'>
@@ -57,23 +59,21 @@ const Home = () => {
 			)}
 
 			{/* Posts Grid */}
-			{!loading && !error && (
-				<>
-					{posts.length === 0 ? (
-						<div className='text-center py-12'>
-							<p className='text-gray-500 text-lg'>
-								Hozircha postlar qidirib topilmadi!
-							</p>
-						</div>
-					) : (
-						<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-							{posts.map(post => (
-								<PostCard key={post.id} post={post} />
-							))}
-						</div>
-					)}
-				</>
-			)}
+			{!loading &&
+				!error &&
+				(posts.length === 0 ? (
+					<div className='text-center py-12'>
+						<p className='text-gray-500 text-lg'>
+							Hozircha postlar qidirib topilmadi!
+						</p>
+					</div>
+				) : (
+					<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+						{posts.map(post => (
+							<PostCard key={post._id} post={post} />
+						))}
+					</div>
+				))}
 
 			{/* Bottom Buy Me a Coffee Section */}
 			{!loading && posts.length > 0 && (

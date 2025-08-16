@@ -22,6 +22,7 @@ const Navbar = () => {
 	const handleSearch = e => {
 		e.preventDefault()
 		if (searchQuery.trim()) {
+			// /search sahifasiga yo'naltirish va query param berish
 			navigate(`/search?q=${encodeURIComponent(searchQuery)}`)
 			setSearchQuery('')
 		}
@@ -32,20 +33,19 @@ const Navbar = () => {
 			{/* MOBILE TOP BAR */}
 			<header className='md:hidden fixed top-0 left-0 w-full bg-blue-500 text-white shadow-lg z-50'>
 				<div className='flex items-center justify-between px-3 py-2'>
-					{/* Chapda Logo */}
 					<span className='font-bold text-lg'>IxlosWare</span>
 
-					{/* O'ngda Qidiruv */}
 					<form
 						onSubmit={handleSearch}
 						className='flex items-center bg-white rounded-full px-2 py-1'
 					>
 						<input
 							type='text'
+							name='q'
 							placeholder='Qidirish...'
 							value={searchQuery}
 							onChange={e => setSearchQuery(e.target.value)}
-							className='w-34 bg-transparent outline-none text-sm text-gray-700'
+							className='w-32 bg-transparent outline-none text-sm text-gray-700'
 						/>
 						<button type='submit' className='text-blue-500 hover:text-blue-600'>
 							<Search size={18} />
@@ -99,18 +99,17 @@ const Navbar = () => {
 
 			{/* DESKTOP NAVBAR */}
 			<nav className='hidden md:flex fixed top-4 left-1/2 -translate-x-1/2 w-[90%] bg-white/80 backdrop-blur-md shadow-lg border border-gray-200 rounded-full px-6 py-3 items-center justify-between z-50'>
-				{/* Left: Logo */}
 				<Link to='/' className='text-xl font-extrabold text-blue-500'>
 					IxlosWare
 				</Link>
 
-				{/* Center: Search */}
 				<form
 					onSubmit={handleSearch}
 					className='flex items-center bg-gray-100 rounded-full px-2 py-2'
 				>
 					<input
 						type='text'
+						name='q'
 						placeholder='Qidirish...'
 						value={searchQuery}
 						onChange={e => setSearchQuery(e.target.value)}
@@ -121,7 +120,6 @@ const Navbar = () => {
 					</button>
 				</form>
 
-				{/* Right: Menu */}
 				<div className='flex items-center space-x-4'>
 					{navItems.map(item =>
 						item.external ? (

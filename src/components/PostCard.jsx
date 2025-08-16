@@ -1,17 +1,18 @@
 import { Link } from 'react-router-dom'
 
 const PostCard = ({ post }) => {
-	const truncateDescription = (text, maxLength = 150) => {
+	const truncateContent = (text, maxLength = 150) => {
 		if (!text) return ''
-		return text.length <= maxLength
-			? text
-			: text.substring(0, maxLength) + '...'
+		const plainText = text.replace(/<[^>]+>/g, '') // HTML teglarni olib tashlash
+		return plainText.length <= maxLength
+			? plainText
+			: plainText.substring(0, maxLength) + '...'
 	}
 
 	return (
-		<article className='bg-white rounded-xl shadow-md overflow-hidden transform transition-all duration-300 hover:scale-[1.02] hover:shadow-xl'>
+		<article className='bg-white rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl flex flex-col h-full'>
 			{/* Post Image */}
-			<div className='aspect-video overflow-hidden relative group'>
+			<div className='relative overflow-hidden aspect-video group'>
 				<img
 					src={
 						post.image || 'https://via.placeholder.com/400x225?text=No+Image'
@@ -19,24 +20,23 @@ const PostCard = ({ post }) => {
 					alt={post.title}
 					className='w-full h-full object-cover transition-transform duration-500 group-hover:scale-110'
 				/>
-				{/* Overlay gradient on hover */}
-				<div className='absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
+				<div className='absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
 			</div>
 
 			{/* Post Content */}
-			<div className='p-6 flex flex-col h-full'>
-				<h2 className='text-xl font-bold text-gray-900 mb-3 line-clamp-2'>
+			<div className='p-6 flex flex-col flex-grow'>
+				<h2 className='text-lg md:text-xl font-bold text-gray-900 mb-3 line-clamp-2'>
 					{post.title}
 				</h2>
 
-				<p className='text-gray-600 text-sm leading-relaxed mb-6 flex-grow'>
-					{truncateDescription(post.description || post.content)}
+				<p className='text-gray-700 text-sm md:text-base leading-relaxed mb-4 flex-grow'>
+					{truncateContent(post.content, 180)}
 				</p>
 
-				{/* Read More Link styled as button */}
+				{/* Read More Link */}
 				<Link
-					to={`/post/${post.id}`}
-					className='inline-flex items-center justify-center w-max px-4 py-2 rounded-full bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white text-sm font-medium shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105'
+					to={`/post/${post._id}`}
+					className='inline-flex items-center justify-center w-max px-5 py-2 rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white text-sm md:text-base font-medium shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105'
 				>
 					Read More
 					<svg

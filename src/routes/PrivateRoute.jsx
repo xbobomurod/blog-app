@@ -1,11 +1,15 @@
-import { Navigate } from "react-router-dom";
-import { authAPI } from "../services/authAPI";
+// routes/PrivateRoute.jsx
+import { Navigate } from 'react-router-dom'
+import { authAPI } from '../services/authAPI'
 
 const PrivateRoute = ({ children }) => {
-  if (!authAPI.isAuthenticated()) {
-    return <Navigate to="/login" replace />;
-  }
-  return children;
-};
+	const isAuth = authAPI.isAuthenticated()
 
-export default PrivateRoute;
+	if (!isAuth) {
+		return <Navigate to='/login' replace />
+	}
+
+	return children
+}
+
+export default PrivateRoute

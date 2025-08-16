@@ -1,15 +1,19 @@
+import api from './api'
+
 export const authAPI = {
 	login: async (username, password) => {
-		// Backendda oldindan berilgan admin login
-		if (username === 'admin' && password === '123456') {
-			localStorage.setItem('token', 'fake-jwt-token')
-			return { success: true }
+		const response = await api.post('/admin/login', { username, password })
+		const { token } = response.data
+		if (token) {
+			localStorage.setItem('token', token)
 		}
-		throw new Error('Invalid username or password')
+		return response.data
 	},
+
 	logout: () => {
 		localStorage.removeItem('token')
 	},
+
 	isAuthenticated: () => {
 		return !!localStorage.getItem('token')
 	},

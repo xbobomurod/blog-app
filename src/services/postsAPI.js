@@ -7,7 +7,7 @@ const api = axios.create({
 	baseURL: API_BASE_URL,
 })
 
-// 📝 Posts API
+// Posts API
 export const postsAPI = {
 	getAllPosts: async () => {
 		const response = await api.get('/posts')
@@ -24,7 +24,7 @@ export const postsAPI = {
 		const response = await api.post('/admin/posts', postData, {
 			headers: {
 				Authorization: `Bearer ${token}`,
-				'Content-Type': 'multipart/form-data', // rasm + matn birga
+				'Content-Type': 'multipart/form-data',
 			},
 		})
 		return response.data
@@ -49,7 +49,5 @@ export const postsAPI = {
 		return response.data
 	},
 }
-
-// ⚠️ Upload API alohida kerak emas, chunki createPost / updatePost rasmni qamrab oladi
 
 export default api
